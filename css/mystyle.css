@@ -6,3 +6,16 @@
 .btn{
     float: right;
 }
+
+#width-table-action {
+    width: 15%;
+    text-align: center;
+}
+
+.width-table-action{
+    text-align: center;
+}
+
+.custom-checkbox {
+    margin: 0px !important;
+}

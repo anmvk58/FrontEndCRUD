@@ -60,7 +60,7 @@ function callLoginAPI(username, password) {
         },
         error(jqXHR, textStatus, errorThrown) {
             if (jqXHR.status == 401) {
-                pushNotification('Login Fail', 'Đăng nhập không thành công', 'warning');
+                pushNotification('Login Fail', 'Thông tin đăng nhập không hợp lệ', 'warning');
             } else {
                 console.log(jqXHR);
                 console.log(textStatus);

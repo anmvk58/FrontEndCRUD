@@ -90,7 +90,7 @@
 
 			<main class="content">
 				<div class="container-fluid p-0">
-					<h1 class="h3 mb-3">Danh sách Accounts</h1>
+					<h1 class="h2 mb-3 text-primary">Danh sách Accounts</h1>
 					<div>
 						<div class="filer-table">
 							<button class="btn btn-primary ">Thêm mới</button>
@@ -107,10 +107,17 @@
 									<table id="datatables-basic" class="table table-striped" style="width:100%">
 										<thead>
 											<tr>
+												<th>
+													<label class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" >
+														<span class="custom-control-label"></span>	
+													</label>
+												</th>
 												<th>Username</th>
 												<th>Full name</th>
 												<th>Role</th>
 												<th>Department</th>
+												<th id="width-table-action">Actions</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -151,9 +158,9 @@
 	<script>
 		$(function() {
 			// Datatables basic
-			$("#datatables-basic").DataTable({
-				responsive: true
-			});
+			// $("#datatables-basic").DataTable({
+			// 	responsive: true
+			// });
 
 			buildAccountTable();
 		});
@@ -180,10 +187,20 @@
 				data.content.forEach(function(item, index){
 					$("#datatables-basic tbody").append(
 						'<tr>' + 
+							'<td> ' +
+								'<label class="custom-control custom-checkbox">' +
+									'<input type="checkbox" class="custom-control-input" >' +
+									'<span class="custom-control-label"></span>'+
+								'</label>' +
+							'</td>' +
 							'<td>' + item.username + '</td>' +
 							'<td>' + item.fullName + '</td>' +
 							'<td>' + item.role + '</td>' +
 							'<td>' + item.departmentName + '</td>' +
+							'<td class="table-action width-table-action">'+
+								'<a href="#"><i class="align-middle" data-feather="edit-2"></i></a>' + '&nbsp&nbsp&nbsp' +
+								'<a href="#"><i class="align-middle" data-feather="trash"></i></a>'	+
+							'</td>'+
 						'</tr>'
 					)
 				});
