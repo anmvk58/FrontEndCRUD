@@ -19,3 +19,7 @@
 .custom-checkbox {
     margin: 0px !important;
 }
+
+#account-page-info{
+    display: flex;
+}
