@@ -20,6 +20,30 @@
     margin: 0px !important;
 }
 
-#account-page-info{
+#account-page-info {
     display: flex;
+}
+
+#nav-paging {
+    float: right;
+}
+
+#search-dev, #filter-dev {
+    display: flex;
+}
+
+#filter-dev select:first-child{
+    margin-right: 5px;
+}
+#filter-dev select:last-child{
+    margin-left: 5px;
+}
+
+#search-dev button{
+    white-space: nowrap;
+    margin-left: 10px;
+}
+
+.fa-trash-can {
+    margin-left: 10px;
 }

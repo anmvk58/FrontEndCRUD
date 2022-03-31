@@ -7,23 +7,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="Responsive Bootstrap 4 Admin &amp; Dashboard Template">
 	<meta name="author" content="Bootlab">
+	<title>Accounts List</title>
 
-	<title>Homepage</title>
-
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 	<link rel="preconnect" href="//fonts.gstatic.com/" crossorigin="">
 
-	<!-- PICK ONE OF THE STYLES BELOW -->
 	<link href="../css/classic.css" rel="stylesheet">
 	<link href="../css/mystyle.css" rel="stylesheet">
-<!-- 
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag() { dataLayer.push(arguments); }
-		gtag('js', new Date());
-
-		gtag('config', 'UA-120946860-6');
-	</script> -->
-	
 </head>
 
 <body>
@@ -91,10 +81,37 @@
 
 			<main class="content">
 				<div class="container-fluid p-0">
-					<h1 class="h2 mb-3 text-primary">Danh sách Accounts</h1>
+					<h1 class="h2 mb-3 text-primary">List Accounts</h1>
 					<div>
-						<div class="filer-table">
-							<button class="btn btn-primary ">Thêm mới</button>
+						<div class="row" style="margin-bottom: 10px;">
+							<div class="col-md-3" id="filter-dev">
+								<select class="form-control">
+									<option selected="">Select a role</option>
+									<option>One</option>
+									<option>Two</option>
+									<option>Three</option>
+								</select>
+								<select class="form-control">
+									<option selected="">Select a department</option>
+									<option>One</option>
+									<option>Two</option>
+									<option>Three</option>
+								</select>
+							</div>
+							<div class="col-md-3"></div>
+							<div class="col-md-3"></div>
+							<div class="col-md-3"></div>
+						</div>
+						<div class="row" style="margin-bottom: 10px;">
+							<div class="col-md-3" id="search-dev">
+								<input type="text" class="form-control" placeholder="Typing username ...">
+								<button class="btn btn-info">Search</button>
+							</div>
+							<div class="col-md-3"></div>
+							<div class="col-md-3"></div>
+							<div class="col-md-3">
+								<button class="btn btn-primary ">Add + </button>
+							</div>
 						</div>
 					</div>
 					<div class="row">
@@ -123,10 +140,10 @@
 											</tr>
 										</thead>
 										<tbody>
-											
+										
 										</tbody>
 									</table>
-									<nav aria-label="Page navigation example">
+									<nav id="nav-paging">
 										<ul class="pagination pagination-sm">
 											<li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
 											<div id="account-page-info">
@@ -163,11 +180,8 @@
 			</footer>
 		</div>
 	</div>
-
-	<script src="../js/app.js"></script>
+	<script src="../js/app.js" ></script>
 	<script src="../js/program.js"></script>
-	
-
 	<script>
 		$(function() {
 			// Datatables basic
@@ -211,8 +225,8 @@
 							'<td>' + item.role + '</td>' +
 							'<td>' + item.departmentName + '</td>' +
 							'<td class="table-action width-table-action">'+
-								'<a href="#"><i class="align-middle" data-feather="edit-2"></i></a>' + '&nbsp&nbsp&nbsp' +
-								'<a href="#"><i class="align-middle" data-feather="trash"></i></a>'	+
+								'<a href="#"><i class="fa-solid fa-pencil"></i></a>'+
+								'<a href="#"><i class="fa-regular fa-trash-can"></i></a>'	+
 							'</td>'+
 						'</tr>'
 					)
