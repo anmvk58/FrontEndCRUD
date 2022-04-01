@@ -9,7 +9,7 @@
 	<meta name="author" content="Bootlab">
 	<title>Accounts List</title>
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 	<link rel="preconnect" href="//fonts.gstatic.com/" crossorigin="">
 
 	<link href="../css/classic.css" rel="stylesheet">
@@ -84,13 +84,15 @@
 					<h1 class="h2 mb-3 text-primary">List Accounts</h1>
 					<div>
 						<div class="row" style="margin-bottom: 10px;">
-							<div class="col-md-3" id="filter-dev">
+							<div class="col-md-3">
 								<select class="form-control">
 									<option selected="">Select a role</option>
 									<option>One</option>
 									<option>Two</option>
 									<option>Three</option>
 								</select>
+							</div>
+							<div class="col-md-3">
 								<select class="form-control">
 									<option selected="">Select a department</option>
 									<option>One</option>
@@ -98,19 +100,13 @@
 									<option>Three</option>
 								</select>
 							</div>
-							<div class="col-md-3"></div>
-							<div class="col-md-3"></div>
-							<div class="col-md-3"></div>
-						</div>
-						<div class="row" style="margin-bottom: 10px;">
-							<div class="col-md-3" id="search-dev">
-								<input type="text" class="form-control" placeholder="Typing username ...">
-								<button class="btn btn-info">Search</button>
-							</div>
-							<div class="col-md-3"></div>
-							<div class="col-md-3"></div>
 							<div class="col-md-3">
-								<button class="btn btn-primary ">Add + </button>
+								<input type="text" class="form-control" placeholder="Typing username ...">
+			
+							</div>
+							<div class="col-md-3">
+								<button class="btn btn-info" id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+								<button class="btn btn-primary" id="add-btn"><i class="fa-solid fa-user-plus"></i></button>
 							</div>
 						</div>
 					</div>

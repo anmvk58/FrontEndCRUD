@@ -3,7 +3,11 @@
     margin-bottom: 10px;
 }
 
-.btn{
+#search-btn {
+    float: left;
+}
+
+#add-btn {
     float: right;
 }
 
@@ -28,7 +32,7 @@
     float: right;
 }
 
-#search-dev, #filter-dev {
+#filter-dev {
     display: flex;
 }
 
