@@ -81,7 +81,7 @@ function getListAccounts() {
                 '</tr>'
             )
         });
-        fillAccountPaging(data.numberOfElements, data.totalPages);
+        fillAccountPaging(data.numberOfElements, data.totalPages, data.totalElements);
     },
     error(jqXHR, textStatus, errorThrown) {
         console.log(jqXHR);
@@ -338,7 +338,7 @@ function addAccount() {
 // function to reset modal form
 function resetAddAccountForm() {
     // set title
-    document.getElementById("title-modal-form").innerHTML = "Thêm mới Accounts";
+    document.getElementById("title-modal-form").innerHTML = "Add new Accounts";
 
     // Reset all input value
     document.getElementById("modal-username").value = "";
@@ -376,7 +376,7 @@ function saveAccount() {
 
 
 // paging
-function fillAccountPaging(currentSize, totalPages) {
+function fillAccountPaging(currentSize, totalPages, totalElements) {
     // prev
     if (currentPage > 1) {
         document.getElementById("account-previousPage-btn").disabled = false;
@@ -392,7 +392,7 @@ function fillAccountPaging(currentSize, totalPages) {
     }
 
     // text
-    document.getElementById("account-page-info").innerHTML = currentSize + (currentSize > 1 ? " records " : " record ") + currentPage + " of " + totalPages;
+    document.getElementById("account-page-info").innerHTML = 'Showing '+ ((currentPage-1)*size+1) + ' to ' + ((currentPage-1)*size + currentSize) + ' of ' + totalElements + ' entries' ;
 
     // number slot page
     var pageNumbString = '';
