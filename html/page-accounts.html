@@ -60,7 +60,7 @@
 							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
 								data-toggle="dropdown">
 								<img src="../img/avatars/avatar-2.jpg" class="avatar img-fluid rounded-circle mr-1"
-									alt="Chris Wood"> <span class="text-dark">Admin</span>
+									alt="Chris Wood"> <span class="text-dark" id="name-admin">Admin</span>
 							</a>
 							<div class="dropdown-menu dropdown-menu-right">
 								<a class="dropdown-item" href="pages-profile.html"><i class="align-middle mr-1"
@@ -72,7 +72,7 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="pages-settings.html">Settings & Privacy</a>
 								<a class="dropdown-item" href="#">Help</a>
-								<a class="dropdown-item" href="#">Sign out</a>
+								<a class="dropdown-item" href="#" onclick="logOut()">Sign out</a>
 							</div>
 						</li>
 					</ul>
@@ -85,28 +85,26 @@
 					<div>
 						<div class="row" style="margin-bottom: 10px;">
 							<div class="col-md-3">
-								<select class="form-control">
-									<option selected="">Select a role</option>
-									<option>One</option>
-									<option>Two</option>
-									<option>Three</option>
+								<select id="filter-role-select" class="form-control">
+									<option selected="" value="">Select a role</option>
+									<option value="All Roles">All Roles</option>
+									<option value="ADMIN">Admin</option>
+									<option value="EMPLOYEE">Employee</option>
+									<option value="MANAGER">Manager</option>
 								</select>
 							</div>
 							<div class="col-md-3">
-								<select class="form-control">
-									<option selected="">Select a department</option>
-									<option>One</option>
-									<option>Two</option>
-									<option>Three</option>
+								<select id="filter-department-select" class="form-control">
+									<option selected="" value="">Select a department</option>
 								</select>
 							</div>
-							<div class="col-md-3">
-								<input type="text" class="form-control" placeholder="Typing username ...">
-			
+							<div class="col-md-3" id="search-div">
+								<input type="text" class="form-control" id="search-content" placeholder="Typing username ...">
+								<button class="btn btn-info" id="search-btn" onclick="pressSearchButton()"><i class="fa-solid fa-magnifying-glass"></i></button>
 							</div>
-							<div class="col-md-3">
-								<button class="btn btn-info" id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-								<button class="btn btn-primary" id="add-btn"><i class="fa-solid fa-user-plus"></i></button>
+							<div class="col-md-3" id="button-function">
+								<button class="btn btn-primary" id="add-btn" data-toggle="modal" data-target="#add-accounts-modal" onclick="openAddAccountModal()"><i class="fa-solid fa fa-plus"></i></button>
+								<button class="btn btn-secondary" id="add-delete-all" data-toggle="modal" data-target="#add-accounts-modal"><i class="fa-regular fa-trash-can"></i></button>
 							</div>
 						</div>
 					</div>
@@ -139,17 +137,22 @@
 										
 										</tbody>
 									</table>
-									<nav id="nav-paging">
-										<ul class="pagination pagination-sm">
-											<li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
-											<div id="account-page-info">
-												<li class="page-item"><a class="page-link" href="#">1</a></li>
-												<li class="page-item active"><a class="page-link" href="#">2</a></li>
-												<li class="page-item"><a class="page-link" href="#">3</a></li>
-											</div>
-											<li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
-										</ul>
-									</nav>
+									<div style="display: flex;justify-content: space-between;">
+										<div id="account-page-info">
+										</div>
+										<div id="nav-paging">
+											<ul class="pagination pagination-sm">
+												<li class="page-item" id="account-previousPage-btn" onclick="prevAccountPage()"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
+												<div style="display: flex;" id="page-number">
+													<!-- <li class="page-item"><a class="page-link" href="#">1</a></li>
+													<li class="page-item active"><a class="page-link" href="#">2</a></li>
+													<li class="page-item"><a class="page-link" href="#">3</a></li> -->
+												</div>
+												<li class="page-item" id="account-nextPage-btn" onclick="nextAccountPage()"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
+											</ul>
+										</div>
+									</div>
+									
 								</div>
 							</div>
 						</div>
@@ -176,79 +179,81 @@
 			</footer>
 		</div>
 	</div>
-	<script src="../js/app.js" ></script>
-	<script src="../js/program.js"></script>
-	<script>
-		$(function() {
-			// Datatables basic
-			// $("#datatables-basic").DataTable({
-			// 	responsive: true
-			// });
+	<!-- Modal Add new Accounts-->
+	<div class="modal fade" id="add-accounts-modal" tabindex="-1" role="dialog" aria-labelledby="Add New Accounts" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h4 class="modal-title text-primary" id="title-modal-form">Thêm mới Accounts</h4>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>	
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="account-id" name="id" value="">
+				<div class="form-group">
+					<label class="form-label">Username</label>
+					<input type="text" class="form-control" id="modal-username">
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label class="form-label">Firstname</label>
+						<input type="text" class="form-control" id="modal-first-name">
+					</div>
+					<div class="form-group col-md-6">
+						<label class="form-label">Lastname</label>
+						<input type="text" class="form-control" id="modal-last-name">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="modal-role-select">Roles</label>
+						<select id="modal-role-select" class="form-control">
+							<option selected="">Choose a role</option>
+							<option value="ADMIN">Admin</option>
+							<option value="EMPLOYEE">Employee</option>
+							<option value="MANAGER">Manager</option>
+						</select>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="modal-department-select">Department</label>
+						<select id="modal-department-select" class="form-control">
+							<option selected="">Choose a department</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary" onclick="saveAccount()">Save</button>
+			</div>
+		</div>
+		</div>
+	</div>
 
-			buildAccountTable();
-		});
-
-		function buildAccountTable() {
-			$('#datatables-basic tbody').empty();
-			getListAccounts();
-		}
-
-		function getListAccounts() {
-			var url = "http://localhost:8080/api/v1/accounts";
-
-			$.ajax({
-			url: url,
-			type: 'GET',
-			contentType: "application/json",
-			dataType: 'json', // datatype return
-			beforeSend: function (xhr) {
-				xhr.setRequestHeader("Authorization", "Basic " + btoa(localStorage.getItem("USERNAME") + ":" + localStorage.getItem("PASSWORD")));
-			},
-			success: function (data, textStatus, xhr) {
-				// success
-				// console.log(data);
-				data.content.forEach(function(item, index){
-					$("#datatables-basic tbody").append(
-						'<tr>' + 
-							'<td> ' +
-								'<label class="custom-control custom-checkbox">' +
-									'<input id="checkbox-' + index + '" type="checkbox" class="custom-control-input" >' +
-									'<span class="custom-control-label"></span>'+
-								'</label>' +
-							'</td>' +
-							'<td>' + item.username + '</td>' +
-							'<td>' + item.fullName + '</td>' +
-							'<td>' + item.role + '</td>' +
-							'<td>' + item.departmentName + '</td>' +
-							'<td class="table-action width-table-action">'+
-								'<a href="#"><i class="fa-solid fa-pencil"></i></a>'+
-								'<a href="#"><i class="fa-regular fa-trash-can"></i></a>'	+
-							'</td>'+
-						'</tr>'
-					)
-				});
-			},
-			error(jqXHR, textStatus, errorThrown) {
-				console.log(jqXHR);
-				console.log(textStatus);
-				console.log(errorThrown);
-			}
-		});
-		}
-
-		function onChangeAccountCheckboxAll() {
-			var i = 0;
-			while (true) {
-				var checkboxItem = document.getElementById("checkbox-" + i);
-				if (checkboxItem !== undefined && checkboxItem !== null) {
-					checkboxItem.checked = document.getElementById("checkbox-all").checked
-					i++;
-				} else {
-					break;
-				}
-			}
-		}	
-	</script>
+	<!-- Modal to delete single id -->
+	<div class="modal fade" id="delete-single-account" tabindex="-1" role="dialog" aria-labelledby="Delete single account" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h4 class="modal-title text-danger">Delete Account</h4>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="modal-body">
+			  <p id="delete-single-account-confirm-mess"></p>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-primary" id="delete-single-account-btn">Delete</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
 </body>
-
+	<script src="../js/noti.js"></script>
+	<script src="../js/app.js" ></script>	
+	<script src="../js/account.js"></script>
+	<script src="../js/program.js"></script>
 </html>

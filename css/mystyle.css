@@ -3,12 +3,16 @@
     margin-bottom: 10px;
 }
 
-#search-btn {
-    float: left;
+#search-div input, #add-delete-all {
+    margin-right: 10px;
 }
 
-#add-btn {
+#search-btn {
     float: right;
+}
+
+#search-div {
+    display: flex;
 }
 
 #width-table-action {
@@ -25,7 +29,7 @@
 }
 
 #account-page-info {
-    display: flex;
+    /* display: flex; */
 }
 
 #nav-paging {
@@ -48,6 +52,11 @@
     margin-left: 10px;
 }
 
-.fa-trash-can {
+a .fa-trash-can {
     margin-left: 10px;
+}
+
+#button-function {
+    display: flex;
+    flex-direction: row-reverse;
 }

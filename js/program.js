@@ -6,6 +6,8 @@ $(function () {
     }
 
     $("#sidebar").load("./common/side-bar.html");
+
+    document.getElementById("name-admin").innerHTML = localStorage.getItem("USERNAME");
 });
 
 function isLogin() {
@@ -13,4 +15,17 @@ function isLogin() {
         return true;
     }
     return false;
+}
+
+function logOut(){
+    localStorage.removeItem("ID");
+    localStorage.removeItem("FULL_NAME");
+    localStorage.removeItem("FIRST_NAME");
+    localStorage.removeItem("LAST_NAME");
+    localStorage.removeItem("ROLE");
+    localStorage.removeItem("USERNAME");
+    localStorage.removeItem("PASSWORD");
+
+    // redirect to login page
+    window.location.reload();
 }

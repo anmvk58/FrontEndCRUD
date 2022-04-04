@@ -19,7 +19,7 @@ function login(){
         // show error message
         pushNotification('Login Fail', 'Vui lòng nhập Username/Password', 'warning');
         return;
-    } else if (username.length < 6 || username.length > 50 || password.length < 6 || password.length > 50) {
+    } else if (username.length < 4 || username.length > 50 || password.length < 4 || password.length > 50) {
         // show error message
         pushNotification('Login Fail', 'Username/Password không đúng định dạng', 'warning');
         return;
