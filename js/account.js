@@ -379,16 +379,16 @@ function saveAccount() {
 function fillAccountPaging(currentSize, totalPages, totalElements) {
     // prev
     if (currentPage > 1) {
-        document.getElementById("account-previousPage-btn").disabled = false;
+        $("#account-previousPage-btn").removeClass('disabled')
     } else {
-        document.getElementById("account-previousPage-btn").disabled = true;
+        $("#account-previousPage-btn").addClass('disabled');
     }
 
     // next
     if (currentPage < totalPages) {
-        document.getElementById("account-nextPage-btn").disabled = false;
+        $("#account-nextPage-btn").removeClass('disabled')
     } else {
-        document.getElementById("account-nextPage-btn").disabled = true;
+        $("#account-nextPage-btn").addClass('disabled')
     }
 
     // text
