@@ -60,3 +60,8 @@ a .fa-trash-can {
     display: flex;
     flex-direction: row-reverse;
 }
+
+.disabled{
+    pointer-events:none;
+    opacity:0.4;
+}

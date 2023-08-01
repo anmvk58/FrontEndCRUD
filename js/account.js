@@ -75,7 +75,7 @@ function getListAccounts() {
                     '<td>' + item.role + '</td>' +
                     '<td>' + item.departmentName + '</td>' +
                     '<td class="table-action width-table-action">'+
-                        '<a href="#"><i class="fa-solid fa-pencil"></i></a>'+
+                        '<a href="#" onclick="showUpdateAccountModal(' + item.id + ')"><i class="fa-solid fa-pencil"></i></a>'+
                         '<a href="#" data-toggle="modal" data-target="#delete-single-account" onclick="showDeleteSingleAccountModal(' + item.id + ', \'' + item.fullName + '\')"><i class="fa-regular fa-trash-can"></i></a>' +
                     '</td>'+
                 '</tr>'
@@ -138,20 +138,20 @@ function setupDepartmentFilter() {
                 xhr.setRequestHeader("Authorization", "Basic " + btoa(localStorage.getItem("USERNAME") + ":" + localStorage.getItem("PASSWORD")));
             },
             type: "GET",
-            // data: function (params) {
-            //     var query = {
-            //         // paging
-            //         page: 1,
-            //         size: 10,
-            //         // sorting
-            //         sort: "id,asc",
-            //         // search
-            //         search: params.term
-            //     }
+            data: function (params) {
+                var query = {
+                    // paging
+                    page: 1,
+                    size: 10,
+                    // sorting
+                    sort: "id,asc",
+                    // search
+                    search: params.term
+                }
 
-            //     // Query parameters will be ?page=1&size=5&sort=id,asc&search=[term]
-            //     return query;
-            // },
+                // Query parameters will be ?page=1&size=5&sort=id,asc&search=[term]
+                return query;
+            },
             processResults: function (data) {
                 var defaultValue = {
                     "id": 0,
@@ -186,20 +186,20 @@ function setupDepartmentSelectionInForm() {
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Authorization", "Basic " + btoa(localStorage.getItem("USERNAME") + ":" + localStorage.getItem("PASSWORD")));
             },
-            // data: function (params) {
-            //     var query = {
-            //         // paging
-            //         page: 1,
-            //         size: 10,
-            //         // sorting
-            //         sort: "id,asc",
-            //         // search
-            //         search: params.term
-            //     }
+            data: function (params) {
+                var query = {
+                    // paging
+                    page: 1,
+                    size: 10,
+                    // sorting
+                    sort: "id,asc",
+                    // search
+                    search: params.term
+                }
 
-            //     // Query parameters will be ?page=1&size=5&sort=id,asc&search=[term]
-            //     return query;
-            // },
+                // Query parameters will be ?page=1&size=5&sort=id,asc&search=[term]
+                return query;
+            },
             processResults: function (data) {
                 return {
                     results: $.map(data.content, function (item) {
@@ -207,6 +207,49 @@ function setupDepartmentSelectionInForm() {
                             text: item.name,
                             id: item.id
                         }
+                    })
+                };
+            }
+        }
+    });
+}
+
+function setupDepartmentSelectionInForm2(departmentName) {
+    // change selectboxes to selectize mode to be searchable
+    // setup call API
+    $("#modal-department-select").select2({
+        placeholder: "Select a department",
+        ajax: {
+            url: "http://localhost:8080/api/v1/accounts/departments",
+            dataType: 'json',
+            type: "GET",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Basic " + btoa(localStorage.getItem("USERNAME") + ":" + localStorage.getItem("PASSWORD")));
+            },
+            data: function (params) {
+                var query = {
+                    // paging
+                    page: 1,
+                    size: 10,
+                    // sorting
+                    sort: "id,asc",
+                    // search
+                    search: params.term
+                }
+
+                // Query parameters will be ?page=1&size=5&sort=id,asc&search=[term]
+                return query;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data.content, function (item) {
+                        if(item.name === departmentName){
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        }
+                        
                     })
                 };
             }
@@ -246,7 +289,6 @@ function deleteSingleAccount(accountId) {
         }
     });
 }
-
 
 // API create new Accounts from parameter
 function createAccountViaAPI(username, firstName, lastName, role, departmentId) {
@@ -370,25 +412,26 @@ function saveAccount() {
     if (!id) {
         addAccount();
     } else {
-        // updateAccount();
+        updateAccount();
     }
 }
 
 
 // paging
 function fillAccountPaging(currentSize, totalPages, totalElements) {
+    console.log(currentPage)
     // prev
     if (currentPage > 1) {
-        document.getElementById("account-previousPage-btn").disabled = false;
+        $("#account-previousPage-btn").removeClass('disabled')
     } else {
-        document.getElementById("account-previousPage-btn").disabled = true;
+        $("#account-previousPage-btn").addClass('disabled');
     }
 
     // next
     if (currentPage < totalPages) {
-        document.getElementById("account-nextPage-btn").disabled = false;
+        $("#account-nextPage-btn").removeClass('disabled')
     } else {
-        document.getElementById("account-nextPage-btn").disabled = true;
+        $("#account-nextPage-btn").addClass('disabled')
     }
 
     // text
@@ -417,4 +460,86 @@ function nextAccountPage() {
 function changeAccountPage(page) {
     currentPage = page;
     buildAccountTable();
+}
+
+//update account
+function showUpdateAccountModal(id){
+    $('#add-accounts-modal').modal('show');
+    prepareUpdateAccountForm(id);
+}
+
+function prepareUpdateAccountForm(id) {
+    // set title
+    document.getElementById("title-modal-form").innerHTML = "Update an Account";
+    setupDepartmentSelectionInForm();
+
+    // call api get details Account
+    $.ajax({
+        url: "http://localhost:8080/api/v1/accounts/" + id,
+        type: 'GET',
+        contentType: "application/json",
+        dataType: 'json', // datatype return
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + btoa(localStorage.getItem("USERNAME") + ":" + localStorage.getItem("PASSWORD")));
+        },
+        success: function (data, textStatus, xhr) {
+            console.log(data)
+            // success
+            // Map input value
+            document.getElementById("account-id").value = data.id;
+            document.getElementById("modal-username").value = data.username;
+            document.getElementById("modal-first-name").value = data.firstName;
+            document.getElementById("modal-last-name").value = data.lastName;
+            document.getElementById("modal-role-select").value = data.role;
+            $("#modal-department-select").append('<option selected="" value="'+ data.departmentId +'">'+ data.departmentName + '</option>')
+            
+        
+        },
+        error(jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+    });
+}
+
+
+function updateAccount(){
+    console.log('UPDATEEEEE')
+    var id =  $("#account-id").val();
+    var username =  $("#modal-username").val();
+    var firstName =  $("#modal-first-name").val();
+    var lastName =  $("#modal-last-name").val();
+    var role =  $("#modal-role-select").val();
+    var departmentId = $('#modal-department-select option:selected').val();
+
+    var createAccountForm = {
+        "username": username,
+        "firstName": firstName,
+        "lastName": lastName,
+        "role": role,
+        "departmentId": departmentId
+    }
+
+    $.ajax({
+        url: 'http://localhost:8080/api/v1/accounts/'+ id,
+        type: 'PUT',
+        data: JSON.stringify(createAccountForm), // add body
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + btoa(localStorage.getItem("USERNAME") + ":" + localStorage.getItem("PASSWORD")));
+        },
+        contentType: "application/json", // type of body (json, xml, text)
+        success: function (data, textStatus, xhr) {
+            // success
+            $("#add-accounts-modal").modal('hide');
+            pushNotification('Account Updated !', 'Update account thành công!', 'success');
+            buildAccountTable();
+        },
+        error(jqXHR, textStatus, errorThrown) {
+            alert("Error when loading data");
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+    });
 }
