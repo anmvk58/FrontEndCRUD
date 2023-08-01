@@ -214,48 +214,6 @@ function setupDepartmentSelectionInForm() {
     });
 }
 
-function setupDepartmentSelectionInForm2(departmentName) {
-    // change selectboxes to selectize mode to be searchable
-    // setup call API
-    $("#modal-department-select").select2({
-        placeholder: "Select a department",
-        ajax: {
-            url: "http://localhost:8080/api/v1/accounts/departments",
-            dataType: 'json',
-            type: "GET",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", "Basic " + btoa(localStorage.getItem("USERNAME") + ":" + localStorage.getItem("PASSWORD")));
-            },
-            data: function (params) {
-                var query = {
-                    // paging
-                    page: 1,
-                    size: 10,
-                    // sorting
-                    sort: "id,asc",
-                    // search
-                    search: params.term
-                }
-
-                // Query parameters will be ?page=1&size=5&sort=id,asc&search=[term]
-                return query;
-            },
-            processResults: function (data) {
-                return {
-                    results: $.map(data.content, function (item) {
-                        if(item.name === departmentName){
-                            return {
-                                text: item.name,
-                                id: item.id
-                            }
-                        }
-                        
-                    })
-                };
-            }
-        }
-    });
-}
 
 //Show modal to delete single
 function showDeleteSingleAccountModal(accountId, fullName) {
